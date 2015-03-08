@@ -1,0 +1,22 @@
+{
+  "name": "nodebb-plugin-topic-admins",
+  "version": "0.0.1",
+  "description": "This plugin allows users to add admins in a topic. Topics admins can edit main post.",
+  "main": "library.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/segura2010/nodebb-plugin-topic-admins"
+  },
+  "keywords": [
+    "nodebb",
+    "plugin",
+    "shell"
+  ],
+  "author": {
+    "name": "Alberto Segura",
+    "email": "alberto.segura.delgado@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/segura2010/nodebb-plugin-topic-admins/issues"
+  }
+}

@@ -1,0 +1,11 @@
+{
+	"id": "nodebb-plugin-topic-admins",
+	"name": "Topic Admins for NodeBB",
+	"description": "This plugin allows users to add admins in a topic. Topics admins can edit main post.",
+	"url": "https://github.com/rbbau/nodebb-plugin-tags-title",
+	"library": "./library.js",
+	
+	"scripts": [
+		"public/js/client.js"
+	]
+}
