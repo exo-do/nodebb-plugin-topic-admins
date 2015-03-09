@@ -59,7 +59,7 @@
 												});
 											}
 											var compid = $($(".composer")[0]).attr("id");
-											compid = compid.replace("cmp-uuid-");
+											compid = compid.replace("cmp-uuid-", "");
 											composer.minimize(compid);
 										});
 									});

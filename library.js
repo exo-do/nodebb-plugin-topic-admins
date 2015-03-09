@@ -82,8 +82,8 @@ SocketPlugins.addTopicAdmin = function(socket, data, callback) {
           var actAdmins = post.admins || "[]";
           actAdmins = JSON.parse(actAdmins);
           User.getUidByUsername(data.user, function(err, nAdmin){
-            if(err || !nAdmin)
-            {
+            if(err || !nAdmin || topicAdmins.havePermission(nAdmin, post.admins))
+            { // if error, no user with this username or this user is admin -> ERROR
               callback("noUser", "");
               return;
             }
