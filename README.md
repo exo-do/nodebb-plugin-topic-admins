@@ -4,12 +4,8 @@ This plugin allows users to add admins in a topic. Topics admins can edit main p
 
 # Usage
 
-Users can allow other user to edit his post using a special "BBCODE" tag. Example:
-[admins]@oneadmin@otheradmin[/admins]
-
-Between "[admins]" and "[/admins]", the user must mention the users that he wants that become admins.
-
-This is a beta version, soon we will do a button to do it easier.
+Users can allow other user to edit his post.
+To do it, they can add admins clicking in "admins" button and adding admins by username.
 
 # Compatibility
 NodeBB 0.7 or newest
