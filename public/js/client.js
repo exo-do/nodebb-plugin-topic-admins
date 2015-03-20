@@ -31,6 +31,7 @@
 								var pid = $(posts[0]).attr("data-pid");
 								composer.editPost(pid);
 								setTimeout(function(){
+									$(".title.form-control").attr("disabled","1"); // Dont allow to change topics name
 									var submitBtn = $(".composer-container").find(".btn.btn-primary");
 									submitBtn.attr("data-action", "editTopicAdmins");
 									submitBtn.on("click", function(){
