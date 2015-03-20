@@ -15,25 +15,7 @@ var topicAdmins = {};
 
 topicAdmins.havePermission = function(user, admins)
 {
-  /* Check if user have permission to edit post
-  var admins = content.match(/\[admins\].*\[\/admins\]/i);
-  if(admins)
-  {
-    // Remove BBCODE tag
-    admins = admins[0].replace("[admins]", "");
-    admins = admins.replace("[/admins]", "");
-    // Split in an array all admins
-    admins = admins.split("@");
-    if(admins && admins.indexOf(user)>-1)
-    {
-      return true;
-    }
-  }
-  return false;
-  */
-
   return ( admins && (JSON.parse(admins)).indexOf(user) > -1);
-
 };
 
 SocketPlugins.editMainPost = function(socket, data, callback) {
@@ -52,8 +34,18 @@ SocketPlugins.editMainPost = function(socket, data, callback) {
             callback(err, "ok");
           });
           */
-          postsTools.edit({pid:data.pid, uid:post.uid, title:data.title, content:data.content}, function(err, r){
-            callback(err, "ok");
+          Topic.getTopicData(post.tid, function(err, topic){
+            // Dont allow to change topics name
+            if(!err)
+            {
+              postsTools.edit({pid:data.pid, uid:post.uid, title:topic.title,content:data.content}, function(err, r){
+                callback(err, "ok");
+              });
+            }
+            else
+            {
+              callback("err","");
+            }
           });
         }
         else
