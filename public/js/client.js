@@ -8,8 +8,8 @@
 			require(['composer', 'string'], function(composer, String) {
 				S = String;
 				// Do something
-				var editBtn = '<button class="btn btn-sm btn-default edit" type="button" title="Edit" id="topicAdminsEdit"><i class="fa fa-pencil"></i> Editar</button>';
-				var adminsBtn = '<button class="btn btn-sm btn-default" type="button" title="Admins" id="topicAdminsShow">Admins</button>';
+				var editBtn = '<div class="pull-left hidden-xs"><div class="btn-group" id="editbutton"><button class="btn btn-sm btn-link" type="button" title="Editar admins del hilo" id="topicAdminsEdit"><i class="fa fa-pencil"></i></button></div></div>';
+				var adminsBtn = '<div class="pull-left hidden-xs"><div class="btn-group" id="adminbutton"><button class="btn btn-sm btn-link" type="button" title="Ver admins del hilo" id="topicAdminsShow"><i class="fa fa-gavel"></i></button></div></div><div class="btn-group"></div>';
 				// Get posts
 				var posts = $(".post-row");
 				// Load Composer to edit post
