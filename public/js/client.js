@@ -48,6 +48,8 @@
 													message: "El post fue editado correctamente!",
 													alert_id: 'post_success'
 												});
+												// Refresh on update
+												document.location.href = document.URL;
 											}
 											else
 											{
@@ -181,7 +183,7 @@
 					label: 'Aceptar',
 					className: 'btn-primary',
 					callback: function (e) {
-						return addNewAdmin();
+						return true;
 					}
 				}
 			}
