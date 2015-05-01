@@ -14,7 +14,7 @@
 				var posts = $(".post-row");
 				// Load Composer to edit post
 				var pid = $(posts[0]).attr("data-pid");
-				if(pid && $(".topic-buttons.clearfix"))
+				if(pid && $(".topic-buttons.clearfix") && ajaxify.variables.get('currentPage')==1 )
 				{
 					$(posts[0]).find(".topic-buttons.clearfix").append(adminsBtn);
 					$("#topicAdminsShow").on("click", createAdminEditor);

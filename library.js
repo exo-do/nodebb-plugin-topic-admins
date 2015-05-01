@@ -13,9 +13,9 @@ var SocketPlugins = module.parent.require('./socket.io/plugins');
 var topicAdmins = {};
 
 
-topicAdmins.havePermission = function(user, admins)
+topicAdmins.havePermission = function(user, admins, isAdmin)
 {
-  return ( admins && (JSON.parse(admins)).indexOf(user) > -1);
+    return ( isAdmin || ( admins && (JSON.parse(admins)).indexOf(user) > -1) );
 };
 
 SocketPlugins.editMainPost = function(socket, data, callback) {
@@ -27,7 +27,7 @@ SocketPlugins.editMainPost = function(socket, data, callback) {
     User.getUserData(socket.uid, function(err, user){
       Posts.getPostData(data.pid, function(err, post){
         var admins = post.admins || "[]";
-        if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, admins))
+        if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, admins, false))
         {
           /*
           Posts.setPostFields(data.pid, {title:data.title, content:data.content}, function(err, r){
@@ -38,7 +38,7 @@ SocketPlugins.editMainPost = function(socket, data, callback) {
             // Dont allow to change topics name
             if(!err)
             {
-              postsTools.edit({pid:data.pid, uid:post.uid, title:topic.title,content:data.content}, function(err, r){
+              postsTools.edit({pid:data.pid, uid:post.uid, title:topic.title, content:data.content}, function(err, r){
                 callback(err, "ok");
               });
             }
@@ -69,26 +69,28 @@ SocketPlugins.addTopicAdmin = function(socket, data, callback) {
   {
     User.getUserData(socket.uid, function(err, user){
       Posts.getPostData(data.pid, function(err, post){
-        if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, post.admins))
-        {
-          var actAdmins = post.admins || "[]";
-          actAdmins = JSON.parse(actAdmins);
-          User.getUidByUsername(data.user, function(err, nAdmin){
-            if(err || !nAdmin || topicAdmins.havePermission(nAdmin, post.admins))
-            { // if error, no user with this username or this user is admin -> ERROR
-              callback("noUser", "");
-              return;
-            }
-            actAdmins.push(nAdmin);
-            Posts.setPostFields(data.pid, {admins:JSON.stringify(actAdmins)}, function(err, r){
-              callback(err, "ok");
+        User.isAdministrator(socket.uid, function(err, isAdmin){
+          if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, post.admins, isAdmin))
+          {
+            var actAdmins = post.admins || "[]";
+            actAdmins = JSON.parse(actAdmins);
+            User.getUidByUsername(data.user, function(err, nAdmin){
+              if(err || !nAdmin || topicAdmins.havePermission(nAdmin, post.admins, false))
+              { // if error, no user with this username or this user is admin -> ERROR
+                callback("noUser", "");
+                return;
+              }
+              actAdmins.push(nAdmin);
+              Posts.setPostFields(data.pid, {admins:JSON.stringify(actAdmins)}, function(err, r){
+                callback(err, "ok");
+              });
             });
-          });
-        }
-        else
-        {
-          callback("noPermission", "");
-        }
+          }
+          else
+          {
+            callback("noPermission", "");
+          }
+        });
       });
     });
   }
@@ -106,25 +108,27 @@ SocketPlugins.deleteTopicAdmin = function(socket, data, callback) {
   {
     User.getUserData(socket.uid, function(err, user){
       Posts.getPostData(data.pid, function(err, post){
-        if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, post.admins))
-        {
-          var actAdmins = post.admins || "[]";
-          actAdmins = JSON.parse(actAdmins);
-          if(err)
+        User.isAdministrator(socket.uid, function(nAdmin, isAdmin){
+          if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, post.admins, isAdmin))
           {
-            callback("noUser", "");
-            return;
+            var actAdmins = post.admins || "[]";
+            actAdmins = JSON.parse(actAdmins);
+            if(err)
+            {
+              callback("noUser", "");
+              return;
+            }
+            var deleteAdmin = actAdmins.indexOf(data.uid);
+            actAdmins.splice(deleteAdmin, 1);
+            Posts.setPostFields(data.pid, {admins:JSON.stringify(actAdmins)}, function(err, r){
+              callback(err, "ok");
+            });
           }
-          var deleteAdmin = actAdmins.indexOf(data.uid);
-          actAdmins.splice(deleteAdmin, 1);
-          Posts.setPostFields(data.pid, {admins:JSON.stringify(actAdmins)}, function(err, r){
-            callback(err, "ok");
-          });
-        }
-        else
-        {
-          callback("noPermission", "");
-        }
+          else
+          {
+            callback("noPermission", "");
+          }
+        });
       });
     });
   }
@@ -160,15 +164,17 @@ SocketPlugins.getTopicAdmin = function(socket, data, callback){
 
 SocketPlugins.isTopicAdmin = function(socket, data, callback){
   Posts.getPostData(data.pid, function(err, post){
-    var admins = post.admins || "[]";
-    if(post.uid == socket.uid || topicAdmins.havePermission(socket.uid, admins) )
-    {
-      callback(null, true);
-    }
-    else
-    {
-      callback(null, false);
-    }
+    User.isAdministrator(socket.uid, function(nAdmin, isAdmin){
+      var admins = post.admins || "[]";
+      if(post.uid == socket.uid || topicAdmins.havePermission(socket.uid, admins, isAdmin) )
+      {
+        callback(null, true);
+      }
+      else
+      {
+        callback(null, false);
+      }
+    });
   });
 };
 
