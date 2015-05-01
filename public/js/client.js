@@ -8,7 +8,7 @@
 			require(['composer', 'string'], function(composer, String) {
 				S = String;
 				// Do something
-				var editBtn = '<div class="pull-left hidden-xs"><div class="btn-group" id="editbutton"><button class="btn btn-sm btn-link" type="button" title="Editar admins del hilo" id="topicAdminsEdit"><i class="fa fa-pencil"></i></button></div></div>';
+				var editBtn = '<div class="pull-left hidden-xs"><div class="btn-group" id="editbutton"><button class="btn btn-sm btn-link" type="button" title="Editar hilo" id="topicAdminsEdit"><i class="fa fa-pencil"></i></button></div></div>';
 				var adminsBtn = '<div class="pull-left hidden-xs"><div class="btn-group" id="adminbutton"><button class="btn btn-sm btn-link" type="button" title="Ver admins del hilo" id="topicAdminsShow"><i class="fa fa-gavel"></i></button></div></div><div class="btn-group"></div>';
 				// Get posts
 				var posts = $(".post-row");
@@ -100,7 +100,7 @@
 					type: 'danger',
 					timeout: 3000,
 					title: 'Error',
-					message: "Hubo un error al añadir este admin! Quizás no tengas sufucuentes permisos.",
+					message: "Hubo un error al añadir este admin! Quizás no tengas suficuentes permisos.",
 					alert_id: 'post_error'
 				});
 			}
