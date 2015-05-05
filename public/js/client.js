@@ -19,7 +19,7 @@
 					$(posts[0]).find(".topic-buttons.clearfix").append(adminsBtn);
 					$("#topicAdminsShow").on("click", createAdminEditor);
 					socket.emit("plugins.isTopicAdmin", {pid:pid}, function(err, isTopicAdmin){
-						console.log(isTopicAdmin);
+						// console.log(isTopicAdmin);
 						if($(".topic-buttons.clearfix") && isTopicAdmin)
 						{
 							$(posts[0]).find(".topic-buttons.clearfix").append(editBtn);

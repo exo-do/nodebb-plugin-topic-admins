@@ -38,7 +38,7 @@ SocketPlugins.editMainPost = function(socket, data, callback) {
             // Dont allow to change topics name
             if(!err)
             {
-              postsTools.edit({pid:data.pid, uid:post.uid, title:topic.title, content:data.content}, function(err, r){
+              postsTools.edit({pid:data.pid, uid:post.uid, title:data.title, content:data.content}, function(err, r){
                 callback(err, "ok");
               });
             }
