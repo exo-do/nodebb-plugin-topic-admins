@@ -27,6 +27,9 @@ SocketPlugins.editMainPost = function(socket, data, callback) {
     User.getUserData(socket.uid, function(err, user){
       Posts.getPostData(data.pid, function(err, post){
         var admins = post.admins || "[]";
+        console.log("TOPIC ADMINS: ");
+        console.log(admins);
+        console.log(socket.uid);
         if(post.uid == socket.uid || topicAdmins.havePermission(user.uid, admins, false))
         {
           /*
